@@ -1,6 +1,8 @@
 package org.example.models.OneToOne;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,12 +25,15 @@ public class SocialUser {
     private String lastName;
 
 
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
+    @OneToOne(mappedBy = "user" , cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties(value = "user") // resolve circular refrence
     private SocialProfile profile;
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
+    // custom setter to handle bi-directional relationship
+
+
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+//    @JsonIgnoreProperties(value = "user") // resolve circular refrence
     private List<SocialPosts> posts = new ArrayList<>();
 
     @ManyToMany
@@ -37,7 +42,7 @@ public class SocialUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-    @JsonIgnore
+//    @JsonIgnoreProperties(value = "socialUsers") // resolve circular refrence
     private Set<SocialGroups> groups = new HashSet<>();
 
     @Override
@@ -51,5 +56,27 @@ public class SocialUser {
     @Override
     public int hashCode() {
         return Objects.hash(userId);
+    }
+
+    // custom setter method to handle bi-directional mapping
+    public void setProfile(SocialProfile profile){
+        profile.setUser(this);
+        this.profile = profile;
+    }
+
+    public void setPosts(List<SocialPosts> posts){
+        for (SocialPosts post : posts){
+            post.setUser(this);
+        }
+        this.posts = posts;
+    }
+
+    public void setGroups(Set<SocialGroups> groups){
+        for (SocialGroups group : groups){
+            Set<SocialUser> currentUser = new HashSet<>();
+            currentUser.add(this);
+            group.setSocialUsers(currentUser);
+        }
+        this.groups = groups;
     }
 }

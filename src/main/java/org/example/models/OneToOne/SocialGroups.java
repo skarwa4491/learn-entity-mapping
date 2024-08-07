@@ -1,6 +1,7 @@
 package org.example.models.OneToOne;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class SocialGroups {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long groupId;
 
-    @ManyToMany(mappedBy = "groups")
+    @ManyToMany(mappedBy = "groups" , cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<SocialUser> socialUsers = new HashSet<>();
 }

@@ -1,5 +1,6 @@
 package org.example.models.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class SocialProfile {
 
     // inject profileId in SocialUser table
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id" )
+    @JsonIgnore
     private SocialUser user;
 }

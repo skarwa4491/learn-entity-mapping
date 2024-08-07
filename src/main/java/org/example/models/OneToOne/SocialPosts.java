@@ -1,5 +1,6 @@
 package org.example.models.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,5 +20,6 @@ public class SocialPosts {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private SocialUser user;
 }
