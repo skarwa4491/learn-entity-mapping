@@ -26,6 +26,13 @@ public class SocialProfile {
     // inject profileId in SocialUser table
     @OneToOne
     @JoinColumn(name = "user_id" )
-    @JsonIgnore
     private SocialUser user;
+
+    public void setUser(SocialUser user){
+        this.user = user;
+        if(user.getProfile() != null){
+            user.setProfile(this);
+        }
+    }
+
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -21,7 +22,15 @@ public class SocialGroups {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long groupId;
 
-    @ManyToMany(mappedBy = "groups" , cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<SocialUser> socialUsers = new HashSet<>();
+    @ManyToMany(mappedBy = "groups", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<SocialUser>  users = new HashSet<>();
+
+    public void setUsers(Set<SocialUser> users){
+        for(SocialUser user : users){
+            user.getGroups().add(this);
+        }
+    }
+
+
+
 }

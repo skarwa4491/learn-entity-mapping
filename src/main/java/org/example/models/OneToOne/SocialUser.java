@@ -26,14 +26,14 @@ public class SocialUser {
 
 
     @OneToOne(mappedBy = "user" , cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties(value = "user") // resolve circular refrence
+    @JsonIgnoreProperties(value = "user") // resolve circular refrence
     private SocialProfile profile;
 
     // custom setter to handle bi-directional relationship
 
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties(value = "user") // resolve circular refrence
+    @JsonIgnoreProperties(value = "user") // resolve circular refrence
     private List<SocialPosts> posts = new ArrayList<>();
 
     @ManyToMany
@@ -42,7 +42,7 @@ public class SocialUser {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-//    @JsonIgnoreProperties(value = "socialUsers") // resolve circular refrence
+    @JsonIgnoreProperties(value = "socialUsers") // resolve circular refrence
     private Set<SocialGroups> groups = new HashSet<>();
 
     @Override
@@ -72,11 +72,7 @@ public class SocialUser {
     }
 
     public void setGroups(Set<SocialGroups> groups){
-        for (SocialGroups group : groups){
-            Set<SocialUser> currentUser = new HashSet<>();
-            currentUser.add(this);
-            group.setSocialUsers(currentUser);
-        }
         this.groups = groups;
     }
+
 }

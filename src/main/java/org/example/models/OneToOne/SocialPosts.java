@@ -20,6 +20,12 @@ public class SocialPosts {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private SocialUser user;
+
+    public void setUser(SocialUser user){
+        this.user = user;
+        if(user.getPosts() != null){
+            user.getPosts().add(this);
+        }
+    }
 }
