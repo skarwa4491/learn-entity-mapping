@@ -18,6 +18,7 @@ public class SocialPosts {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long postId;
 
+    /*default fetch type is eager here*/
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnore

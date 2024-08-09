@@ -33,11 +33,12 @@ public class SocialUser {
 
     // custom setter to handle bi-directional relationship
 
-
+    /*default fetch type is Lazy here*/
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
 //    @JsonIgnoreProperties(value = "user") // resolve circular refrence
     private List<SocialPosts> posts = new ArrayList<>();
 
+    /*default fetch type is lazy here*/
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "social_user_groups", // creates a separate table with user_id and group_id
