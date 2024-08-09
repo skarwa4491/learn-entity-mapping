@@ -24,8 +24,9 @@ public class SocialProfile {
     private String bio;
 
     // inject profileId in SocialUser table
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id" )
+    @JsonIgnore
     private SocialUser user;
 
     public void setUser(SocialUser user){

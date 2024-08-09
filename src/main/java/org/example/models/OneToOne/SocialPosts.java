@@ -18,8 +18,9 @@ public class SocialPosts {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long postId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private SocialUser user;
 
     public void setUser(SocialUser user){

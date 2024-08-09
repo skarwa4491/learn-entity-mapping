@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.controller.Controllers;
+import org.example.repository.GroupsRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,23 +28,23 @@ public class SocialUser {
 
 
     @OneToOne(mappedBy = "user" , cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = "user") // resolve circular refrence
+//    @JsonIgnoreProperties(value = "user") // resolve circular refrence
     private SocialProfile profile;
 
     // custom setter to handle bi-directional relationship
 
 
     @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
-    @JsonIgnoreProperties(value = "user") // resolve circular refrence
+//    @JsonIgnoreProperties(value = "user") // resolve circular refrence
     private List<SocialPosts> posts = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "social_user_groups", // creates a separate table with user_id and group_id
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
-    @JsonIgnoreProperties(value = "socialUsers") // resolve circular refrence
+//    @JsonIgnoreProperties(value = "socialUsers") // resolve circular refrence
     private Set<SocialGroups> groups = new HashSet<>();
 
     @Override
@@ -71,7 +73,10 @@ public class SocialUser {
         this.posts = posts;
     }
 
-    public void setGroups(Set<SocialGroups> groups){
+    public void setGroups(Set<SocialGroups> groups) {
+        for(SocialGroups group : groups){
+            group.getUsers().add(this);
+        }
         this.groups = groups;
     }
 

@@ -22,15 +22,22 @@ public class SocialGroups {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long groupId;
 
-    @ManyToMany(mappedBy = "groups", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(
+            mappedBy = "groups",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    @JsonIgnore
     private Set<SocialUser>  users = new HashSet<>();
 
-    public void setUsers(Set<SocialUser> users){
-        for(SocialUser user : users){
-            user.getGroups().add(this);
-        }
+    // Custom setter for users to handle bidirectional mapping
+    public void setUser(SocialUser user) {
+        this.users.add(user);
+        user.getGroups().add(this);
     }
 
-
+    public void removeUser(SocialUser user) {
+        this.users.remove(user);
+        user.getGroups().remove(this);
+    }
 
 }
