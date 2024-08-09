@@ -20,19 +20,10 @@ public class Controllers {
 
 
     @Autowired
-    public static SocialUserRepo socialUserRepo;
+    public SocialUserRepo socialUserRepo;
 
     @Autowired
-    public static GroupsRepo  groupsRepo;
-
-    public static SocialUserRepo getSocialUserRepo() {
-        return socialUserRepo;
-    }
-
-    public static GroupsRepo getGroupsRepo() {
-        return groupsRepo;
-    }
-
+    public  GroupsRepo  groupsRepo;
 
     @GetMapping("/api/users")
     public ResponseEntity<List<SocialUser>> getUsers(){
